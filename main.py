@@ -19,6 +19,9 @@ from pathlib import Path
 
 OUTPUT_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
 
+# The gate allows 1 to MAX_CHARS characters; defined once, used below.
+MAX_CHARS = 200
+
 LINE = (
     "fix: removed the bug I wrote at 2am; I have already written "
     "its replacement and will be fixing that one tomorrow at 4am."
@@ -33,8 +36,8 @@ def abort(message):
 
 def deliver():
     """Validate the line against the gate, then write it out."""
-    if not 1 <= len(LINE) <= 200:
-        return abort(f"line is {len(LINE)} characters, the gate allows 1-200")
+    if not 1 <= len(LINE) <= MAX_CHARS:
+        return abort(f"line is {len(LINE)} characters, the gate allows 1-{MAX_CHARS}")
     if not LINE.strip():
         return abort("line is only white space, the gate refuses it")
     target = Path(OUTPUT_DIR) / "entry.txt"
